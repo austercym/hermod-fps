@@ -5,7 +5,10 @@ import shutil
 import logging
 import pysftp
 from datetime import datetime
-
+sys.path.append(os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), 'modules'))
+import zooconfig
+import hdfFileService
 
 def main(args):
     print '### fps-in-file-download service - started'
@@ -31,17 +34,18 @@ def main(args):
     config = zooconfig.get_config(zookeeper_url, zookeeper_config)
     
     # create dir locally if it does not exist
-    local_dir = os.getcwd() + '/' + config["fps_dir"]
+    print config
+    local_dir = os.getcwd() + '/' + config['ftp_dir']
     if not os.path.exists(local_dir):
         os.makedirs(local_dir)
 
     # HDFS connection
-    file_service = self.check_active_name_node(config)
+    file_service = check_active_name_node(config)
 
     # sftp connection
     cnopts = pysftp.CnOpts()
     cnopts.hostkeys = None
-    with pysftp.Connection(config["ftp_host"], username=config["ftp_username"], private_key=config["ftp_private_key"], port=int(config["ftp_port"]), cnopts=cnopts) as sftp:
+    with pysftp.Connection(config["ftp_host"], username=config["ftp_username"], password=config["ftp_password"], port=int(config["ftp_port"]), cnopts=cnopts) as sftp:
         print('### Connected to SFTP')
         print('### Moving to ' + config["ftp_dir"])
         
@@ -63,14 +67,14 @@ def main(args):
                     sftp.get(f.filename, localpath=localpath, preserve_mtime=True)
                     
                     # Checking if file exists on HDFS
-                    hdfs_path = config["fps_dir"] + '/' + f.filename
+                    hdfs_path = config["hdfs_files_path"] + '/' + f.filename
                     print('### Checking if file exists on HDFS : ' + hdfs_path)
                      
                     if file_service.get_file_status(hdfs_path) != None:
                         # If file exists in HDFS move file to error dir with unique name
                         print('### File exists in HDFS directory, moving to error folder')
                         unique_filename = ticksString + '.' + f.filename + '.error'
-                        error_path = config["fps_error_dir"] + '/' + unique_filename
+                        error_path = config["ftp_error_dir"] + '/' + unique_filename
                         print('### MOVE from : ' + config["ftp_dir"]+'/'+f.filename+ ' TO : ' + error_path)
                         sftp.rename(f.filename, error_path)
                     
@@ -85,20 +89,20 @@ def main(args):
                         print('### MOVE from : ' + config["ftp_dir"]+'/'+f.filename+ ' TO : ' + archive_path)
                         sftp.rename(f.filename, archive_path)
 
-                 except Exception as exc:
-                        print '### Error during processing file: %s' % (f.filename), exc
-                        
-                        # On exception move file to error dir with unique name
-                        unique_filename = ticksString + '.' + f.filename + '.error'
-                        error_path = config["fps_error_dir"] + '/' + unique_filename
-                        print('### MOVE from : ' + config["ftp_dir"]+'/'+f.filename + ' TO : ' + error_path)
-                        sftp.rename(f.filename, error_path)
+                except Exception as exc:
+                    print '### Error during processing file: %s' % (f.filename), exc
+                    
+                    # On exception move file to error dir with unique name
+                    unique_filename = ticksString + '.' + f.filename + '.error'
+                    error_path = config["ftp_error_dir"] + '/' + unique_filename
+                    print('### MOVE from : ' + config["ftp_dir"]+'/'+f.filename + ' TO : ' + error_path)
+                    sftp.rename(f.filename, error_path)
 
         print('### Removing local temporary directory')
         shutil.rmtree(local_dir)
         print '### fps-in-file-download service - finished'
 
-def check_active_name_node(self, config):
+def check_active_name_node(config):
     active_name_node = config['hdfs_name_node_1']
     file_service = hdfFileService.HdfsFileService(config, active_name_node)
     try:

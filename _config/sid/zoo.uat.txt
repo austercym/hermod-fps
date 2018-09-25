@@ -1,0 +1,44 @@
+######## SID fps-in-file-download ####################################################################################
+create /fps '-'
+create /fps/incoming '-'
+create /fps/incoming/fps-in-file-download '-'
+
+#### FTP ####
+create /fps/incoming/fps-in-file-download/ftp_username ftp_site
+create /fps/incoming/fps-in-file-download/ftp_password bacs
+create /fps/incoming/fps-in-file-download/ftp_private_key /home/svc_bacs/.ssh/bacs_bl_uat
+create /fps/incoming/fps-in-file-download/ftp_host 54.38.137.247
+create /fps/incoming/fps-in-file-download/ftp_port 22
+create /fps/incoming/fps-in-file-download/ftp_dir /home/bacs_site/bacs/incoming
+create /fps/incoming/fps-in-file-download/ftp_archive_dir /home/bacs_site/bacs/incoming-archive
+create /fps/incoming/fps-in-file-download/ftp_error_dir /home/bacs_site/bacs/incoming-error
+
+#### HDFS ####
+create /fps/incoming/fps-in-file-download/hdfs_name_node_1 http://ambari-master.node.consul:50070
+create /fps/incoming/fps-in-file-download/hdfs_name_node_2 http://ambari-slave-0.node.consul:50070
+create /fps/incoming/fps-in-file-download/hdfs_files_path /lagertha/hermod/data/ftp/incoming
+create /fps/incoming/fps-in-file-download/hdfs_archive_folder /lagertha/hermod/data/ftp/incoming-archive
+create /fps/incoming/fps-in-file-download/hdfs_error_folder /lagertha/hermod/data/ftp/incoming-error
+
+######################################################################################################################
+
+######## SID fps-in-file-process ####################################################################################
+create /fps '-'
+create /fps/incoming '-'
+create /fps/incoming/fps-in-file-process '-'
+
+#### API ####
+create /fps/incoming/fps-in-file-process/api_url https://10.1.159.200:8285/bifrost
+create /fps/incoming/fps-in-file-process/api_user chaps
+create /fps/incoming/fps-in-file-process/api_password chaps
+
+#### HDFS ####
+create /fps/incoming/fps-in-file-process/hdfs_name_node_1 http://ambari-master.node.consul:50070
+create /fps/incoming/fps-in-file-process/hdfs_name_node_2 http://ambari-slave-0.node.consul:50070
+create /fps/incoming/fps-in-file-process/hdfs_files_path /lagertha/hermod/data/ftp/incoming
+create /fps/incoming/fps-in-file-process/hdfs_archive_folder /lagertha/hermod/data/ftp/incoming-archive
+create /fps/incoming/fps-in-file-process/hdfs_error_folder /lagertha/hermod/data/ftp/incoming-error
+
+create /fps/incoming/fps-in-file-process/idGeneratorPort 25399
+
+######################################################################################################################
