@@ -5,7 +5,8 @@ import shutil
 import logging
 import requests
 import json
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'models'))
+sys.path.append(os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), os.pardir+'/modules/models'))
 import transaction
 
 class ApiClient:
@@ -13,7 +14,7 @@ class ApiClient:
         self.config = config
 
     def get_token(self):
-        url = self.config['api_url'] + '/login'
+        url = self.config['api_login_url'] + '/login'
         user = self.config['api_user']
         password = self.config['api_password']
         headers = {'content-type': 'application/json'}

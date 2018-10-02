@@ -28,20 +28,54 @@ create /fps/incoming '-'
 create /fps/incoming/fps-in-file-process '-'
 
 #### API ####
-create /fps/incoming/fps-in-file-process/api_url https://sid-api-0.node.sid.consul:8285/bifrost
+create /fps/incoming/fps-in-file-process/api_login_url https://sid-api-0.node.sid.consul:8285/bifrost
+create /fps/incoming/fps-in-file-process/api_url https://sid-api-0.node.sid.consul:8080/bifrost
 create /fps/incoming/fps-in-file-process/api_user chaps
 create /fps/incoming/fps-in-file-process/api_password chaps
 
 #### HDFS ####
 create /fps/incoming/fps-in-file-process/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
 create /fps/incoming/fps-in-file-process/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
-create /fps/incoming/fps-in-file-process/hdfs_files_path /lagertha/hermod/data/ftp/incoming
-create /fps/incoming/fps-in-file-process/hdfs_archive_folder /lagertha/hermod/data/ftp/incoming-archive
-create /fps/incoming/fps-in-file-process/hdfs_error_folder /lagertha/hermod/data/ftp/incoming-error
+create /fps/incoming/fps-in-file-process/hdfs_files_path /lagertha/hermod/data/fps/incoming
+create /fps/incoming/fps-in-file-process/hdfs_archive_folder /lagertha/hermod/data/fps/incoming-archive
+create /fps/incoming/fps-in-file-process/hdfs_error_folder /lagertha/hermod/data/fps/incoming-error
 
 create /fps/incoming/fps-in-file-process/idGeneratorPort 25399
 
 #### HBASE ####
 create /fps/incoming/fps-in-file-process/phoenix_url sid-hdp-g1-0.node.sid.consul:2181:/hbase-secure
-create /fps/incoming/fps-in-file-process/fps_messages_table V3_FPS_MESSAGES
+create /fps/incoming/fps-in-file-process/fps_messages_table V3_FPS_MESSAGES_OUTGOING
+######################################################################################################################
+
+######## SID fps-ack-file-generator ####################################################################################
+create /fps '-'
+create /fps/incoming '-'
+create /fps/incoming/fps-ack-file-generator '-'
+
+#### HDFS ####
+create /fps/incoming/fps-ack-file-generator/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
+create /fps/incoming/fps-ack-file-generator/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+create /fps/incoming/fps-ack-file-generator/hdfs_files_path_ack /lagertha/hermod/data/fps/ack
+create /fps/incoming/fps-ack-file-generator/hdfs_files_path_nack /lagertha/hermod/data/fps/nack
+
+
+#### HBASE ####
+create /fps/incoming/fps-ack-file-generator/phoenix_url sid-hdp-g1-0.node.sid.consul:2181:/hbase-secure
+create /fps/incoming/fps-ack-file-generator/fps_messages_table V3_FPS_MESSAGES_OUTGOING
+######################################################################################################################
+
+######## SID fps-confirmation-file-generator ####################################################################################
+create /fps '-'
+create /fps/incoming '-'
+create /fps/incoming/fps-confirmation-file-generator '-'
+
+#### HDFS ####
+create /fps/incoming/fps-confirmation-file-generator/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
+create /fps/incoming/fps-confirmation-file-generator/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+create /fps/incoming/fps-confirmation-file-generator/hdfs_files_path_confirmation /lagertha/hermod/data/fps/confirmation
+
+
+#### HBASE ####
+create /fps/incoming/fps-confirmation-file-generator/phoenix_url sid-hdp-g1-0.node.sid.consul:2181:/hbase-secure
+create /fps/incoming/fps-confirmation-file-generator/fps_messages_table V3_FPS_MESSAGES_OUTGOING
 ######################################################################################################################

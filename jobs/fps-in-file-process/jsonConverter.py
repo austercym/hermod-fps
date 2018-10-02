@@ -6,28 +6,28 @@ import shutil
 import logging
 import json
 sys.path.append(os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), 'models'))
+    os.path.realpath(__file__)), os.pardir+'/modules/models'))
 import transaction
 import fpsFile
 
 
 class JsonConverter:
 
-    def convert(self, transaction):
+    def convert(self, transaction, message_id):
         #TODO: what about the other fields? 
         data = {"paymentType": "SIP",
                 "intrBkSttlmAmtCcy": "GBP",
                 "intrBkSttlmAmt": transaction.amount,
                 "dbtrAgt": "235889",
                 "dbtrAcct": "89989983",
-                "dbtrAcctId": "650042IPAGO",
+                "dbtrAcctId": "650101IPAGO",
                 "dbtrNm": transaction.sender_name,
-                "endToEndId": transaction.transaction_id,
+                "endToEndId": message_id,
                 "cdtrAgt": transaction.receiver_sort_code,
-                "cdtrAcct": "23000032",
+                "cdtrAcct": "10000568",
                 "cdtrAcctId": "",
                 "cdtrNm": transaction.receiver_name,
-                "cdtrPstlAdr": ["123 NOWHERE ROAD","CAMBRIDGE"],
+                "cdtrPstlAdr": [""],
                 "ctgyPurp": "INTERNET",
                 "purp": "BIL",
                 "returnedPaymentId": "",

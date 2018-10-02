@@ -1,0 +1,20 @@
+[
+    [
+        "expected_xml",
+        "transaction_id",
+        "file_id",
+        "date",
+        "string_date",
+        "amount"
+    ],
+    [
+        [
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><SubmitResponse><ResponseHeader xmlns=\"http://bacs.co.uk/submissions\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" version=\"1.0\"><ResponseCode>T200</ResponseCode><SubmissionIdentifier>153743400025910001293058</SubmissionIdentifier></ResponseHeader><SubmissionResults xmlns=\"http://bacs.co.uk/submissions\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" submissionIdentifier=\"153743400025910001293058\" status=\"complete\" submissionType=\"live\" submissionSerialNumber=\"002096\" submissionDateAndTime=\"Thu Sep 20 10:00:01 BST 2018\" submissionEarliestDate=\"2018-09-20\"><SubmittingServiceUser userNumber=\"440380\" name=\"Ipagoo LLP\" /><SubmittingContact contactIdentifier=\"HSM1077747\" fullName=\"Orwell Union HSM1\" /><SigningContact contactIdentifier=\"HSM1077747\" fullName=\"Orwell Union HSM1\" /><PaymentFile status=\"complete\" index=\"1\" paymentFileIdentifier=\"270\" processingDay=\"2018-09-20\" currency=\"GBP\" creditRecordCount=\"1\" creditValueTotal=\"170403\" debitRecordCount=\"0\" debitValueTotal=\"0\" workCode=\"2 FPS    \"><OriginatingServiceUser userNumber=\"440380\" name=\"Ipagoo LLP\" /></PaymentFile></SubmissionResults></SubmitResponse>",
+            "153743400025910001293058",
+            "002096",
+            "Thu Sep 20 10:00:01 BST 2018",
+            "2018-09-20",
+            "170403"
+        ]
+    ]
+]

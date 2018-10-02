@@ -1,6 +1,6 @@
 #!/bin/bash
 pip install virtualenv
-virtualenv ./setup-process-env
-cd setup-process-env
+virtualenv ../../fps-process-env
+cd ../../fps-process-env
 . ./bin/activate
-pip install requests
+pip install pyxb kazoo thrift python-dateutil gssapi hdfs[kerberos] xmltodict kafka kafka-python avro PyKerberos py4j requests

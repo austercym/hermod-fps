@@ -8,7 +8,7 @@ import json
 sys.path.append(os.path.join(os.path.dirname(
     os.path.realpath(__file__)), os.pardir))
 sys.path.append(os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), os.pardir+'/models'))
+    os.path.realpath(__file__)), '../../modules/models'))
 sys.path.append(os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'data'))
 import transaction
@@ -29,8 +29,7 @@ data = json.load(open(os.path.join(os.path.dirname(
 def test_read_transcations(csv_parser, expected_length, content, file_id):
     # act
     fps_file = csv_parser.parse(content)
-    transactions = fps_file.transactions
+    transaction = fps_file.transaction
 
     # assert
-    assert int(expected_length) == len(transactions)
     assert file_id == fps_file.file_id

@@ -1,7 +1,8 @@
 
 class Transaction:
 
-    def __init__(self, transaction_id=None, nostro_sort_code=None, nostro_account_number=None, amount=None, receiver_sort_code=None, receiver_account_number=None, receiver_name=None, reference=None, sender_name=None):
+    def __init__(self, row_key=None, transaction_id=None, nostro_sort_code=None, nostro_account_number=None, amount=None, receiver_sort_code=None, receiver_account_number=None, receiver_name=None, reference=None, sender_name=None, status=None):
+        self._row_key = row_key
         self._transaction_id = transaction_id
         self._nostro_sort_code = nostro_sort_code
         self._nostro_account_number = nostro_account_number
@@ -11,6 +12,15 @@ class Transaction:
         self._receiver_name = receiver_name
         self._reference = reference
         self._sender_name = sender_name
+        self._status = status
+
+    @property
+    def row_key(self):
+        return self._row_key
+
+    @row_key.setter
+    def row_key(self, value):
+        self._row_key = value
 
     @property
     def transaction_id(self):
@@ -83,3 +93,11 @@ class Transaction:
     @sender_name.setter
     def sender_name(self, value):
         self._sender_name = value
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, value):
+        self._status = value

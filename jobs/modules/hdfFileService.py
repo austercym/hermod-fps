@@ -20,8 +20,8 @@ class HdfsFileService:
         files = self.hdfs_client.list(file_path, status=True)
         return files
 
-    def upload_file(self, file_path):
-        files_folder = self.config["hdfs_files_path"]
+    def upload_file(self, file_path, dest_file_path):
+        files_folder = dest_file_path
         self.hdfs_client.upload(files_folder, file_path)
 
     def get_file_status(self, file_path):
