@@ -79,3 +79,22 @@ create /fps/incoming/fps-confirmation-file-generator/hdfs_files_path_confirmatio
 create /fps/incoming/fps-confirmation-file-generator/phoenix_url sid-hdp-g1-0.node.sid.consul:2181:/hbase-secure
 create /fps/incoming/fps-confirmation-file-generator/fps_messages_table V3_FPS_MESSAGES_OUTGOING
 ######################################################################################################################
+
+
+######## SID fps-in-file-upload ####################################################################################
+create /fps '-'
+create /fps/incoming '-'
+create /fps/incoming/fps-in-file-upload '-'
+
+#### FTP ####
+create /fps/incoming/fps-in-file-upload/ftp_username fps_site
+create /fps/incoming/fps-in-file-upload/ftp_password fps
+create /fps/incoming/fps-in-file-upload/ftp_private_key /home/svc_fps/.ssh/bacs_bl_uat
+create /fps/incoming/fps-in-file-upload/ftp_host 54.38.137.247
+create /fps/incoming/fps-in-file-upload/ftp_port 22
+
+#### HDFS ####
+create /fps/incoming/fps-in-file-upload/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
+create /fps/incoming/fps-in-file-upload/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+
+######################################################################################################################
