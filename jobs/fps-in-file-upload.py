@@ -44,7 +44,7 @@ def main(args):
         print 'Hdfs archive path not provided'
         sys.exit(2)
 
-    zookeeper_config = '/fps/incoming/fps-in-file-upload/'
+    zookeeper_config = '/fps/outgoing/fps-in-file-upload/'
 
     print '### Fetching configuration from zookeeper url: ', zookeeper_url
     print '### Fetching configuration from zookeeper node: ', zookeeper_config
@@ -53,30 +53,30 @@ def main(args):
     # HDFS connection
     file_service = check_active_name_node(config)
     local_path = os.path.dirname(os.path.realpath(__file__))
-    print '[HDFS Download file] Download to path : {0}'.format(local_path)
-    download_path = file_service.download(hdfs_path, local_path)
-    print '[HDFS Download file] Files have been download to path : {0}'.format(download_path)
-    
-   
-
-    # sftp connection
-    cnopts = pysftp.CnOpts()
-    cnopts.hostkeys = None
-    with pysftp.Connection(config["ftp_host"], username=config["ftp_username"], password=config["ftp_password"], port=int(config["ftp_port"]), cnopts=cnopts) as sftp:
-        print('### Connected to SFTP')
-        sftp.put_d(download_path, ftp_path)
-        print('### Files have been copied to SFTP')
-    
-    # archive files in hdfs
     files = file_service.get_files(hdfs_path)
-    
-    for f in files:
-        file_path = '%s/%s' % (hdfs_path, f[0])
-        print '[HDFS Achive file] File {0} have been archived to path : {1}'.format(file_path, archive_folder)
-        file_service.archive_file(f[0], file_path, archive_folder)
+    if(len(files) > 0):
+        print '[HDFS Download file] Download to path : {0}'.format(local_path)
+        download_path = file_service.download(hdfs_path, local_path)
+        print '[HDFS Download file] Files have been download to path : {0}'.format(download_path)
+        
+        # sftp connection
+        cnopts = pysftp.CnOpts()
+        cnopts.hostkeys = None
+        with pysftp.Connection(config["ftp_host"], username=config["ftp_username"], password=config["ftp_password"], port=int(config["ftp_port"]), cnopts=cnopts) as sftp:
+            print('### Connected to SFTP')
+            sftp.put_d(download_path, ftp_path)
+            print('### Files have been copied to SFTP')
+        
+        # archive files in hdfs
+        files = file_service.get_files(hdfs_path)
+        
+        for f in files:
+            file_path = '%s/%s' % (hdfs_path, f[0])
+            print '[HDFS Achive file] File {0} have been archived to path : {1}'.format(file_path, archive_folder)
+            file_service.archive_file(f[0], file_path, archive_folder)
 
-    shutil.rmtree(download_path)
-    print '### fps-in-file-upload service - finished'
+        shutil.rmtree(download_path)
+        print '### fps-in-file-upload service - finished'
 
 
 def check_active_name_node(config):

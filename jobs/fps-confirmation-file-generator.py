@@ -13,6 +13,7 @@ import xmlConverter
 import arrow
 import random
 import zipfile
+import kafkaLogger
 
 def main(args):
     print '### fps-confirmation-file-generator - started'
@@ -29,7 +30,7 @@ def main(args):
     if zookeeper_url == '':
         sys.exit(2)
 
-    zookeeper_config = '/fps/incoming/fps-confirmation-file-generator/'
+    zookeeper_config = '/fps/outgoing/fps-confirmation-file-generator/'
 
     print '### Fetching configuration from zookeeper url: ', zookeeper_url
     print '### Fetching configuration from zookeeper node: ', zookeeper_config
@@ -38,15 +39,16 @@ def main(args):
     config = zooconfig.get_config(zookeeper_url, zookeeper_config)
     file_service = check_active_name_node(config)
     hbase_service = hbaseService.HbaseService(config)
-
+    kafka_logger = kafkaLogger.KafkaLogger(config)
     # 1. Get transaction from hbase
     fps_files = hbase_service.get_confirmation_messages()
     for fps_file in fps_files:
         try:
             # 2. Convert to XML
+            kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_CONFIRMED')
             confirmation_file_content = convert_to_xml(fps_file)
             print '[XML] Converted xml : {0}'.format(confirmation_file_content)
-            file_name = random.randint(1000000, 9999999)
+            file_name = fps_file.transaction.transaction_id
             confirmation_xml_file_name = '{0}.xml'.format(file_name)
             confirmation_zip_file_name = '{0}.zip'.format(file_name)
             # 3. Write XML to file
@@ -60,6 +62,7 @@ def main(args):
             hbase_service.update_message_status(fps_file.transaction.row_key, "CONFIRMED_UPLOADED")
             os.remove(confirmation_xml_file_name)
             os.remove(confirmation_zip_file_name)
+            kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_CONFIRMED_UPLOADED')
         except Exception as exc:
             print '### Error during creating ack file:', exc
             print repr(exc)
@@ -118,7 +121,11 @@ def convert_to_xml(fps_file):
         orig_customer_account_name = fps_file.transaction.sender_name.upper()
     
     xml_converter = xmlConverter.XMLConverter()
-    return xml_converter.convert(file_id, processing_date_short, submission_id, amount, fpid, processing_time, receiver_branch_code, receiver_account_number, reference_information, orig_customer_account_name)
+    
+    if(fps_file.transaction.status == 'CONFIRMED'):
+        return xml_converter.convert_confirmed(file_id, processing_date_short, submission_id, amount, fpid, processing_time, receiver_branch_code, receiver_account_number, reference_information, orig_customer_account_name)
+    
+    return xml_converter.convert_confirmed_failure(file_id, processing_date_short, submission_id, amount, fpid, processing_time, receiver_branch_code, receiver_account_number, reference_information, orig_customer_account_name, fps_file.transaction.rejection_reason)
 
    
 #endregion

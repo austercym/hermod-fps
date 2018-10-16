@@ -27,7 +27,7 @@ def main(args):
         print 'Zookeeper url not provided'
         sys.exit(2)
     
-    zookeeper_config = '/fps/incoming/fps-in-file-download/'
+    zookeeper_config = '/fps/outgoing/fps-in-file-download/'
 
     print '### Fetching configuration from zookeeper url: ', zookeeper_url
     print '### Fetching configuration from zookeeper node: ', zookeeper_config
@@ -81,7 +81,7 @@ def main(args):
                     else:
                         # If file does not exist in HDFS upload file
                         print('### Uploading local file: ' + localpath + ' to ' + hdfs_path + ' on HDFS')
-                        file_service.upload_file(localpath)
+                        file_service.upload_file(localpath, config["hdfs_files_path"])
                                                 
                         # When file has been uploaded to HDFS move file to archive dir with unique name on ftp
                         unique_filename = ticksString + '.' + f.filename + '.archive'

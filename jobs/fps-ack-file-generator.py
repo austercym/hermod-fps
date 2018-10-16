@@ -11,6 +11,7 @@ import hdfFileService
 import hbaseService
 import xmlConverter
 import arrow
+import kafkaLogger
 
 def main(args):
     print '### fps-ack-file-generator - started'
@@ -27,7 +28,7 @@ def main(args):
     if zookeeper_url == '':
         sys.exit(2)
 
-    zookeeper_config = '/fps/incoming/fps-ack-file-generator/'
+    zookeeper_config = '/fps/outgoing/fps-ack-file-generator/'
 
     print '### Fetching configuration from zookeeper url: ', zookeeper_url
     print '### Fetching configuration from zookeeper node: ', zookeeper_config
@@ -36,6 +37,7 @@ def main(args):
     config = zooconfig.get_config(zookeeper_url, zookeeper_config)
     file_service = check_active_name_node(config)
     hbase_service = hbaseService.HbaseService(config)
+    kafka_logger = kafkaLogger.KafkaLogger(config)
 
     # 1. Get transaction from hbase
     fps_files = hbase_service.get_ack_messages()
@@ -51,17 +53,23 @@ def main(args):
             
             # 4. Upload file to HDFS
             if(fps_file.transaction.status == 'ACK'):
+
                 print '[HDFS upload file] Upload generated file to HDFS : {0}'.format(config["hdfs_files_path_ack"])
                 file_service.upload_file(ack_file_name, config["hdfs_files_path_ack"])
                 # 5. Update status in Hbase
                 print '[Hbase row_key ]  {0}'.format(fps_file.transaction.row_key)
                 hbase_service.update_message_status(fps_file.transaction.row_key, "ACK_UPLOADED")
+                # 7. Log to kafka
+                kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_ACK_UPLOADED')
             elif(fps_file.transaction.status == 'NACK'):
+
                 print '[HDFS upload file] Upload generated file to HDFS : {0}'.format(config["hdfs_files_path_nack"])
                 print '[Hbase row_key ]  {0}'.format(fps_file.transaction.row_key)
                 file_service.upload_file(ack_file_name, config["hdfs_files_path_nack"])
                 # 5. Update status in Hbase
                 hbase_service.update_message_status(fps_file.transaction.row_key, "NACK_UPLOADED")
+                # 7. Log to kafka
+                kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_NACK_UPLOADED')
             os.remove(ack_file_name)
         except Exception as exc:
             print '### Error during creating ack file:', exc
@@ -102,8 +110,13 @@ def convert_to_xml(fps_file):
     date = arrow.utcnow()
     processing_date_bst = date.format('ddd MMM DD HH:mm:ss') + ' BST ' + date.format('YYYY')
     processing_date_short = date.format('YYYY-MM-DD')
+    status = 'complete'
+    if(fps_file.transaction.status == 'ACK'):
+        status = 'complete'
+    elif(fps_file.transaction.status == 'NACK'):
+        status = 'failure'
     xml_converter = xmlConverter.XMLConverter()
-    return xml_converter.convert(fps_file, processing_date_bst, processing_date_short)
+    return xml_converter.convert(fps_file, processing_date_bst, processing_date_short, status)
 
 #endregion
 

@@ -30,7 +30,7 @@ class HdfsFileService:
     def get_file_status(self, file_path):
         return self.hdfs_client.status(file_path, strict=False)
 
-    def archive_file(self, file_id, file_path):
+    def archive(self, file_id, file_path):
 
         archive_folder = self.config["hdfs_archive_folder"]
 

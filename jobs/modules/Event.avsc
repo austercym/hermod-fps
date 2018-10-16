@@ -1,0 +1,49 @@
+{
+ 	"namespace": "com.orwellg.umbrella.avro.types.event",
+ 	"name": "Event",
+ 	"type": "record",
+ 	"fields": [
+   		{"name": "event", "type": {
+   			"name": "EventType", "type": "record", "fields": [
+   				{"name": "version", "type": "string", "default": "0.0.1"},
+         		{"name": "timestamp", "type": "string"},
+         		{"name": "source", "type": ["null", "string"], "default": "null"},
+         		{"name": "name", "type": "string"},
+         		{"name": "parentKey", "type": ["null", "string"], "default": "null"},
+         		{"name": "key", "type": "string"},
+         		{"name": "data", "type": ["null", 
+         									"string"
+         								 ], "default": "null"}]
+         	}
+   		},
+   		{"name": "processIdentifier", "type": {
+   			"name": "ProcessIdentifierType", "type": "record", "fields": [
+   			    {"name": "parentUuid", "type": ["null", "string"], "default": "null"},
+   				{"name": "uuid", "type": "string"}]
+         	}
+        },
+   		{"name": "entityIdentifier", "type": {
+   			"name": "EntityIdentifierType", "type": "record", "fields": [
+   				{"name": "entity", "type": "string"},
+         		{"name": "brand", "type": ["null", "string"]}]
+         	}
+        },
+   		{"name": "user", "type":[
+   			{ "name": "UserType", "type": "record", "fields": [{"name": "userId", "type": "string"}]},
+   			"null"]
+   		},
+   		{"name": "requestParams", "type": [ 
+   		    {"name": "RequestParamsType", "type": "record", "fields": [     
+          		{"name": "sourceIp", "type": "string"},
+          		{"name": "method", "type": "string"},
+          		{"name": "path", "type": "string"}]
+   			}, "null"]
+   		},
+   		{"name": "responseResults", "type": [
+   			{"name": "ResponseResultType", "type": "record", "fields": [
+   				{"name": "code", "type": "string"},
+            	{"name": "result", "type": ["null", "string"], "default": "null"}]
+            }, "null"]
+   		}
+   	]
+}

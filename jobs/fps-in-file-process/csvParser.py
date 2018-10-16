@@ -16,8 +16,8 @@ class CsvParser:
         fps_file = fpsFile.FpsFile()
         i = 0
         
-        if(len(lines) > 2):
-            raise Exception('File contains more than 1 transaction!')
+        # if(len(lines) > 2):
+        #     raise Exception('File contains more than 1 transaction!')
 
         for line in lines:
             if(i == 0):

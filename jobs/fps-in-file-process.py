@@ -13,7 +13,7 @@ import csvParser
 import hdfFileService
 import hbaseService
 import requests
-
+import kafkaLogger
 from datetime import datetime, timedelta, time
 
 def main(args):
@@ -31,7 +31,7 @@ def main(args):
     if zookeeper_url == '':
         sys.exit(2)
 
-    zookeeper_config = '/fps/incoming/fps-in-file-process/'
+    zookeeper_config = '/fps/outgoing/fps-in-file-process/'
     
 
     print '### Fetching configuration from zookeeper url: ', zookeeper_url
@@ -43,7 +43,7 @@ def main(args):
     generator = idGenerator.IdGenerator(config)
     csv_parser = csvParser.CsvParser()
     hbase_service = hbaseService.HbaseService(config)
-    
+    kafka_logger = kafkaLogger.KafkaLogger(config)
         
     for file_tuple in get_files(config, file_service):
         message_id = generator.generatePaymentId()
@@ -69,7 +69,7 @@ def main(args):
             print '[HBase] Save file : {0}'.format(fps_file.file_id)
             fps_file.transaction.row_key = message_id
             fps_file.transaction.status = "NEW"
-
+            kafka_logger.file_stats(message_id, "Outgoing", 'OUTGOING_NEW')
             print '[HBase] Save transaction : {0}'.format(fps_file.transaction.row_key)
             hbase_service.save_message(fps_file.transaction.row_key, fps_file.transaction, processing_date_string, file_path, fps_file.file_id)
                         
@@ -79,15 +79,16 @@ def main(args):
 
             # 6. Update transaction with status 'ACK' or 'NACK' in hbase
             hbase_service.update_message(fps_file.transaction.row_key, fps_file.transaction)
-
+            
             # 7. Move file to archive in HDFS
             archive_file(config, file_service, file_id, file_path)
-
+            kafka_logger.file_stats(message_id, "Outgoing", 'OUTGOING_{0}'.format(fps_file.transaction.status))
         except Exception as exc:
             print '### Error during fp api call:', exc
             print repr(exc)
             set_error_file(config, file_service, file_id, file_path)
             hbase_service.update_message_status(message_id, "ERROR")
+            kafka_logger.file_stats(message_id, "Outgoing", 'OUTGOING_ERROR')
                 
     print '### fps-in-file-process service - finished'
 
@@ -117,7 +118,7 @@ def get_files(config, file_service):
 
 def archive_file(config, file_service, file_id, file_path):
     print '[HDFS Archive file] Move file to archive : {0}'.format(config["hdfs_archive_folder"])
-    file_service.archive_file(file_id, file_path)
+    file_service.archive(file_id, file_path)
 
 
 def set_error_file(config, file_service, file_id, file_path):
@@ -130,7 +131,7 @@ def set_error_file(config, file_service, file_id, file_path):
 
 def parse_transaction(config, transaction, message_id):
     # Transform CSV -> JSON
-    json_converter = jsonConverter.JsonConverter()
+    json_converter = jsonConverter.JsonConverter(config)
     transaction_json = json_converter.convert(transaction, message_id)
     print '[Process files] Convert csv to json : {0}'.format(transaction_json)
     return transaction_json

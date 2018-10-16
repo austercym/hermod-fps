@@ -13,23 +13,29 @@ import fpsFile
 
 class JsonConverter:
 
+    def __init__(self, config):
+        self.config = config
+
     def convert(self, transaction, message_id):
+        if(transaction.sender_name.strip().lower() == 'OWELL UNION PARTNE' or not transaction.sender_name.strip()):
+            transaction.sender_name = 'ipagoo LLP'
+        
         #TODO: what about the other fields? 
         data = {"paymentType": "SIP",
                 "intrBkSttlmAmtCcy": "GBP",
                 "intrBkSttlmAmt": transaction.amount,
-                "dbtrAgt": "235889",
-                "dbtrAcct": "89989983",
-                "dbtrAcctId": "650101IPAGO",
+                "dbtrAgt": self.config['sender_sort_code'],
+                "dbtrAcct": self.config['sender_account_number'],
+                "dbtrAcctId": "",
                 "dbtrNm": transaction.sender_name,
                 "endToEndId": message_id,
                 "cdtrAgt": transaction.receiver_sort_code,
-                "cdtrAcct": "10000568",
+                "cdtrAcct": transaction.receiver_account_number,
                 "cdtrAcctId": "",
                 "cdtrNm": transaction.receiver_name,
                 "cdtrPstlAdr": [""],
-                "ctgyPurp": "INTERNET",
-                "purp": "BIL",
+                "ctgyPurp": "",
+                "purp": "",
                 "returnedPaymentId": "",
                 "paymentReturnCode": "",
                 "referenceInformation": transaction.reference}

@@ -1,9 +1,8 @@
 
-class Transaction:
+class IncomingTransaction:
 
-    def __init__(self, row_key=None, transaction_id=None, nostro_sort_code=None, nostro_account_number=None, amount=None, receiver_sort_code=None, receiver_account_number=None, receiver_name=None, reference=None, sender_name=None, status=None, rejection_reason=None):
+    def __init__(self, row_key=None, nostro_sort_code=None, nostro_account_number=None, amount=None, receiver_sort_code=None, receiver_account_number=None, receiver_name=None, reference=None, sender_name=None, status=None, sender_account_number=None, sender_sort_code=None):
         self._row_key = row_key
-        self._transaction_id = transaction_id
         self._nostro_sort_code = nostro_sort_code
         self._nostro_account_number = nostro_account_number
         self._amount = amount
@@ -13,7 +12,8 @@ class Transaction:
         self._reference = reference
         self._sender_name = sender_name
         self._status = status
-        self._rejection_reason = rejection_reason
+        self._sender_account_number = sender_account_number
+        self._sender_sort_code = sender_sort_code
 
     @property
     def row_key(self):
@@ -22,14 +22,6 @@ class Transaction:
     @row_key.setter
     def row_key(self, value):
         self._row_key = value
-
-    @property
-    def transaction_id(self):
-        return self._transaction_id
-
-    @transaction_id.setter
-    def transaction_id(self, value):
-        self._transaction_id = value
 
     @property
     def nostro_sort_code(self):
@@ -104,9 +96,17 @@ class Transaction:
         self._status = value
 
     @property
-    def rejection_reason(self):
-        return self._rejection_reason
+    def sender_account_number(self):
+        return self._sender_account_number
 
-    @rejection_reason.setter
-    def rejection_reason(self, value):
-        self._rejection_reason = value
+    @sender_account_number.setter
+    def sender_account_number(self, value):
+        self._sender_account_number = value
+
+    @property
+    def sender_sort_code(self):
+        return self._sender_sort_code
+
+    @sender_sort_code.setter
+    def sender_sort_code(self, value):
+        self._sender_sort_code = value

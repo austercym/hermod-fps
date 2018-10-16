@@ -13,11 +13,11 @@ import fpsFile
 
 class XMLConverter:
 
-    def convert(self, fps_file, date, string_date):
-        xmlTemplate = """<?xml version="1.0" encoding="UTF-8"?><SubmitResponse><ResponseHeader xmlns="http://bacs.co.uk/submissions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0"><ResponseCode>T200</ResponseCode><SubmissionIdentifier>%(payment_id)s</SubmissionIdentifier></ResponseHeader><SubmissionResults xmlns="http://bacs.co.uk/submissions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" submissionIdentifier="%(payment_id)s" status="complete" submissionType="live" submissionSerialNumber="%(file_id)s" submissionDateAndTime="%(date)s" submissionEarliestDate="%(string_date)s"><SubmittingServiceUser userNumber="440380" name="Ipagoo LLP" /><SubmittingContact contactIdentifier="HSM1077747" fullName="Orwell Union HSM1" /><SigningContact contactIdentifier="HSM1077747" fullName="Orwell Union HSM1" /><PaymentFile status="complete" index="1" paymentFileIdentifier="270" processingDay="%(string_date)s" currency="GBP" creditRecordCount="1" creditValueTotal="%(amount)s" debitRecordCount="0" debitValueTotal="0" workCode="2 FPS    "><OriginatingServiceUser userNumber="440380" name="Ipagoo LLP" /></PaymentFile></SubmissionResults></SubmitResponse>"""
+    def convert(self, fps_file, date, string_date, status):
+        xmlTemplate = """<?xml version="1.0" encoding="UTF-8"?><SubmitResponse><ResponseHeader xmlns="http://bacs.co.uk/submissions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0"><ResponseCode>T200</ResponseCode><SubmissionIdentifier>%(payment_id)s</SubmissionIdentifier></ResponseHeader><SubmissionResults xmlns="http://bacs.co.uk/submissions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" submissionIdentifier="%(payment_id)s" status="%(status)s" submissionType="live" submissionSerialNumber="%(file_id)s" submissionDateAndTime="%(date)s" submissionEarliestDate="%(string_date)s"><SubmittingServiceUser userNumber="440380" name="Ipagoo LLP" /><SubmittingContact contactIdentifier="HSM1077747" fullName="Orwell Union HSM1" /><SigningContact contactIdentifier="HSM1077747" fullName="Orwell Union HSM1" /><PaymentFile status="%(status)s" index="1" paymentFileIdentifier="270" processingDay="%(string_date)s" currency="GBP" creditRecordCount="1" creditValueTotal="%(amount)s" debitRecordCount="0" debitValueTotal="0" workCode="2 FPS    "><OriginatingServiceUser userNumber="440380" name="Ipagoo LLP" /></PaymentFile></SubmissionResults></SubmitResponse>"""
 
         data = {'payment_id': fps_file.transaction.transaction_id, 'file_id': fps_file.file_id,
-                'date': date, 'string_date': string_date, 'amount': '{0:g}'.format(fps_file.transaction.amount*100)}
+                'date': date, 'string_date': string_date, 'amount': '{0:g}'.format(fps_file.transaction.amount*100), 'status': status}
 
         #print xmlTemplate % data
 
