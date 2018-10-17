@@ -45,7 +45,7 @@ def main(args):
         try:
             # 2. Convert to XML
             ack_file_content = convert_to_xml(fps_file)
-            print '[XML] Converted xml : {0}'.format(ack_file_content)
+            #print '[XML] Converted xml : {0}'.format(ack_file_content)
             ack_file_name = 'FPS_{0}.xml'.format(fps_file.transaction.transaction_id)
             # 3. Write XML to file
             with open(ack_file_name, "w+") as f:

@@ -1,0 +1,33 @@
+<workflow-app 
+    xmlns="uri:oozie:workflow:0.4" name="fps-incoming-file-generator-${environmentName}">
+    <global>
+        <job-tracker>${jobTracker}</job-tracker>
+        <name-node>${nameNode}</name-node>
+        <configuration>
+            <property>
+                <name>mapred.job.queue.name</name>
+                <value>${queueName}</value>
+            </property>
+        </configuration>
+    </global>
+    <start to="fps-incoming-file-generator"/>
+    <action name="fps-incoming-file-generator">
+        <shell 
+            xmlns="uri:oozie:shell-action:0.3">
+            <exec>run-fps-incoming-file-generator.sh</exec>
+            <argument>${zookeeperUrl}</argument>
+            <file>/${rootPath}/modules</file>
+            <file>/${rootPath}/fps-incoming-file-generator.py</file>
+            <file>/${rootPath}/fps-incoming-file-generator</file>
+            <!-- <file>/${rootPath}/hermodbacs.keytab</file> -->
+            <file>/${rootPath}/run-fps-incoming-file-generator.sh#run-fps-incoming-file-generator.sh</file>
+            <capture-output/>
+        </shell>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>${wf:errorMessage(wf:lastErrorNode())}</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>

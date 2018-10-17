@@ -1,0 +1,43 @@
+<coordinator-app
+        name="fps-confirmation-file-generator-${environmentName}"
+        frequency="0/1 * * * *"
+        start="${start_date}" end="${end_date}" timezone="UTC"
+        xmlns="uri:oozie:coordinator:0.4">
+    <controls>
+        <timeout>60</timeout>
+        <concurrency>1</concurrency>
+        <execution>FIFO</execution>
+        <throttle>1</throttle>
+    </controls>
+    <action>
+        <workflow>
+            <app-path>${workflowAppUri}</app-path>
+            <configuration>
+                <property>
+                    <name>jobTracker</name>
+                    <value>${jobTracker}</value>
+                </property>
+                <property>
+                    <name>nameNode</name>
+                    <value>${nameNode}</value>
+                </property>
+                <property>
+                    <name>queueName</name>
+                    <value>${queueName}</value>
+                </property>
+                <property>
+                    <name>oozie.use.system.libpath</name>
+                    <value>True</value>
+                </property>
+                <property>
+                    <name>start_date</name>
+                    <value>${start_date}</value>
+                </property>
+                <property>
+                    <name>end_date</name>
+                    <value>${end_date}</value>
+                </property>
+            </configuration>
+        </workflow>
+    </action>
+</coordinator-app>

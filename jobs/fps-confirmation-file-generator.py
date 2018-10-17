@@ -47,7 +47,7 @@ def main(args):
             # 2. Convert to XML
             kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_CONFIRMED')
             confirmation_file_content = convert_to_xml(fps_file)
-            print '[XML] Converted xml : {0}'.format(confirmation_file_content)
+            #print '[XML] Converted xml : {0}'.format(confirmation_file_content)
             file_name = fps_file.transaction.transaction_id
             confirmation_xml_file_name = '{0}.xml'.format(file_name)
             confirmation_zip_file_name = '{0}.zip'.format(file_name)

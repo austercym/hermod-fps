@@ -43,5 +43,5 @@ class CsvParser:
             txn.reference = values[6]
             txn.sender_name = values[7]
             return txn
-        raise Exception('Transaction line is to short!')
+        return None
 

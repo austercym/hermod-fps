@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'modules'))
 import zooconfig
 import hdfFileService
-
+from datetime import datetime, timedelta, time
 
 def main(args):
     print '### fps-in-file-upload service - started'
@@ -71,9 +71,15 @@ def main(args):
         files = file_service.get_files(hdfs_path)
         
         for f in files:
+            date = datetime.utcnow()
+            date_string = str(date)
+            epoch = datetime.utcfromtimestamp(0)
+            ticks = int((date - epoch).total_seconds() * 1000)
+            date_ticks_string = str(ticks)
+            
             file_path = '%s/%s' % (hdfs_path, f[0])
             print '[HDFS Achive file] File {0} have been archived to path : {1}'.format(file_path, archive_folder)
-            file_service.archive_file(f[0], file_path, archive_folder)
+            file_service.archive_file(date_ticks_string + '.' + f[0], file_path, archive_folder)
 
         shutil.rmtree(download_path)
         print '### fps-in-file-upload service - finished'

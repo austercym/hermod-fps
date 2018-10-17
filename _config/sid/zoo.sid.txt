@@ -53,7 +53,7 @@ create /fps/outgoing/fps-in-file-process/fps_incoming_messages_table V3_FPS_MESS
 #### KAFKA ####
 create /fps/outgoing/fps-in-file-process/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/outgoing/fps-in-file-process/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
-create /fps/outgoing/fps-in-file-process/schema /home/svc_v3fps/hermod-fps/hermod-fps/jobs/modules/Event.avsc
+create /fps/outgoing/fps-in-file-process/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
 create /fps/outgoing/fps-in-file-process/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
 
 ######################################################################################################################
@@ -77,7 +77,7 @@ create /fps/outgoing/fps-ack-file-generator/fps_incoming_messages_table V3_FPS_M
 #### KAFKA ####
 create /fps/outgoing/fps-ack-file-generator/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/outgoing/fps-ack-file-generator/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
-create /fps/outgoing/fps-ack-file-generator/schema /home/svc_v3fps/hermod-fps/hermod-fps/jobs/modules/Event.avsc
+create /fps/outgoing/fps-ack-file-generator/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
 create /fps/outgoing/fps-ack-file-generator/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
 
 ######################################################################################################################
@@ -100,7 +100,7 @@ create /fps/outgoing/fps-confirmation-file-generator/fps_incoming_messages_table
 #### KAFKA ####
 create /fps/outgoing/fps-confirmation-file-generator/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/outgoing/fps-confirmation-file-generator/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
-create /fps/outgoing/fps-confirmation-file-generator/schema /home/svc_v3fps/hermod-fps/hermod-fps/jobs/modules/Event.avsc
+create /fps/outgoing/fps-confirmation-file-generator/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
 create /fps/outgoing/fps-confirmation-file-generator/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
 
 ######################################################################################################################
@@ -145,7 +145,7 @@ create /fps/incoming/fps-incoming-file-generator/fps_messages_table V3_FPS_MESSA
 #### KAFKA ####
 create /fps/incoming/fps-incoming-file-generator/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/incoming/fps-incoming-file-generator/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
-create /fps/incoming/fps-incoming-file-generator/schema /home/svc_v3fps/hermod-fps/hermod-fps/jobs/modules/Event.avsc
+create /fps/incoming/fps-incoming-file-generator/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
 create /fps/incoming/fps-incoming-file-generator/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
 
 ######################################################################################################################
@@ -176,7 +176,7 @@ create /fps/monitoring/fps-file-monitoring/hdfs_files_path_outgoing_error /lager
 #### KAFKA ####
 create /fps/monitoring/fps-file-monitoring/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/monitoring/fps-file-monitoring/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
-create /fps/monitoring/fps-file-monitoring/schema /home/svc_v3fps/hermod-fps/hermod-fps/jobs/modules/Event.avsc
+create /fps/monitoring/fps-file-monitoring/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
 create /fps/monitoring/fps-file-monitoring/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
 
 ######################################################################################################################
