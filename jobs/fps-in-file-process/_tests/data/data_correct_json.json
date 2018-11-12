@@ -1,0 +1,12 @@
+[
+    [
+        "expected_json",
+        "content"
+    ],
+    [
+        [
+            "{\"cdtrAcct\": \"10000568\", \"purp\": \"BIL\", \"cdtrNm\": \"Wirecard Card Solu\", \"cdtrAgt\": \"205942\", \"cdtrPstlAdr\": [\"\"], \"intrBkSttlmAmt\": 1396.74, \"cdtrAcctId\": \"\", \"intrBkSttlmAmtCcy\": \"GBP\", \"dbtrAcct\": \"89989983\", \"endToEndId\": null, \"paymentType\": \"SIP\", \"dbtrNm\": \"Owell Union Partne\", \"dbtrAgt\": \"235889\", \"referenceInformation\": \"99AB40F1-611C-48BB\", \"returnedPaymentId\": \"\", \"dbtrAcctId\": \"650101IPAGO\", \"ctgyPurp\": \"INTERNET\", \"paymentReturnCode\": \"\"}",
+            "002096\n200000,23622398,1396.74,205942,13650383,Wirecard Card Solu,99AB40F1-611C-48BB,Owell Union Partne"
+        ]
+    ]
+]

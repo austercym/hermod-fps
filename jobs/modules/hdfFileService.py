@@ -16,20 +16,30 @@ class HdfsFileService:
 
         return content
 
+    def download(self, hdfs_path, local_path):
+        return self.hdfs_client.download(hdfs_path, local_path)
+
     def get_files(self, file_path):
         files = self.hdfs_client.list(file_path, status=True)
         return files
 
-    def upload_file(self, file_path):
-        files_folder = self.config["hdfs_files_path"]
+    def upload_file(self, file_path, dest_file_path):
+        files_folder = dest_file_path
         self.hdfs_client.upload(files_folder, file_path)
 
     def get_file_status(self, file_path):
         return self.hdfs_client.status(file_path, strict=False)
 
-    def archive_file(self, file_id, file_path):
+    def archive(self, file_id, file_path):
 
         archive_folder = self.config["hdfs_archive_folder"]
+
+        unique_filename = file_id + '.archive'
+        archive_file_path = os.path.join(archive_folder, unique_filename)
+
+        self.hdfs_client.rename(file_path, archive_file_path)
+    
+    def archive_file(self, file_id, file_path, archive_folder):
 
         unique_filename = file_id + '.archive'
         archive_file_path = os.path.join(archive_folder, unique_filename)

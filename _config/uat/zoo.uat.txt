@@ -3,19 +3,19 @@ create /fps '-'
 create /fps/outgoing '-'
 create /fps/outgoing/fps-in-file-download '-'
 
-#### FTP ####create /fps/outgoing/fps-in-file-download/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
-create /fps/outgoing/fps-in-file-download/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
-create /fps/outgoing/fps-in-file-download/ftp_username fps_site
-create /fps/outgoing/fps-in-file-download/ftp_password fps
-create /fps/outgoing/fps-in-file-download/ftp_private_key /home/svc_fps/.ssh/bacs_bl_uat
-create /fps/outgoing/fps-in-file-download/ftp_host 54.38.137.247
+#### FTP ####
+create /fps/outgoing/fps-in-file-download/ftp_username v3fps_site
+create /fps/outgoing/fps-in-file-download/ftp_password fp3qYTc@28
+create /fps/outgoing/fps-in-file-download/ftp_private_key '-'
+create /fps/outgoing/fps-in-file-download/ftp_host connector-sftp-0.node.consul
 create /fps/outgoing/fps-in-file-download/ftp_port 22
-create /fps/outgoing/fps-in-file-download/ftp_dir /home/fps_site/fps/outgoing
-create /fps/outgoing/fps-in-file-download/ftp_archive_dir /home/fps_site/fps/outgoing-archive
-create /fps/outgoing/fps-in-file-download/ftp_error_dir /home/fps_site/fps/outgoing-error
+create /fps/outgoing/fps-in-file-download/ftp_dir /fps/outgoing
+create /fps/outgoing/fps-in-file-download/ftp_archive_dir /fps/outgoing-archive
+create /fps/outgoing/fps-in-file-download/ftp_error_dir /fps/outgoing-error
 
 #### HDFS ####
-
+create /fps/outgoing/fps-in-file-download/hdfs_name_node_1 http://ambari-master.node.consul:50070
+create /fps/outgoing/fps-in-file-download/hdfs_name_node_2 http://ambari-slave-0.node.consul:50070
 create /fps/outgoing/fps-in-file-download/hdfs_files_path /lagertha/hermod/data/fps/outgoing
 create /fps/outgoing/fps-in-file-download/hdfs_archive_folder /lagertha/hermod/data/fps/outgoing-archive
 create /fps/outgoing/fps-in-file-download/hdfs_error_folder /lagertha/hermod/data/fps/outgoing-error
@@ -31,14 +31,14 @@ create /fps/outgoing/fps-in-file-process/sender_sort_code 040082
 create /fps/outgoing/fps-in-file-process/sender_account_number 80956892
 
 #### API ####
-create /fps/outgoing/fps-in-file-process/api_login_url https://apifps.service.sid.consul:8285/bifrost
-create /fps/outgoing/fps-in-file-process/api_url https://apifps.service.sid.consul:8080/bifrost
-create /fps/outgoing/fps-in-file-process/api_user chaps
-create /fps/outgoing/fps-in-file-process/api_password chaps
+create /fps/outgoing/fps-in-file-process/api_login_url https://connector-master-0.node.consul:8285/bifrost
+create /fps/outgoing/fps-in-file-process/api_url https://connector-master-0.node.consul:8080/bifrost
+create /fps/outgoing/fps-in-file-process/api_user fps
+create /fps/outgoing/fps-in-file-process/api_password fps
 
 #### HDFS ####
-create /fps/outgoing/fps-in-file-process/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
-create /fps/outgoing/fps-in-file-process/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+create /fps/outgoing/fps-in-file-process/hdfs_name_node_1 http://ambari-master.node.consul:50070
+create /fps/outgoing/fps-in-file-process/hdfs_name_node_2 http://ambari-slave-0.node.consul:50070
 create /fps/outgoing/fps-in-file-process/hdfs_files_path /lagertha/hermod/data/fps/outgoing
 create /fps/outgoing/fps-in-file-process/hdfs_archive_folder /lagertha/hermod/data/fps/outgoing-archive
 create /fps/outgoing/fps-in-file-process/hdfs_error_folder /lagertha/hermod/data/fps/outgoing-error
@@ -46,7 +46,7 @@ create /fps/outgoing/fps-in-file-process/hdfs_error_folder /lagertha/hermod/data
 create /fps/outgoing/fps-in-file-process/idGeneratorPort 25399
 
 #### HBASE ####
-create /fps/outgoing/fps-in-file-process/phoenix_url sid-hdp-g1-0.node.sid.consul:2181:/hbase-secure
+create /fps/outgoing/fps-in-file-process/phoenix_url ambari-slave-0.node.consul:2181:/hbase-secure
 create /fps/outgoing/fps-in-file-process/fps_messages_table V3_FPS_MESSAGES_OUTGOING
 create /fps/outgoing/fps-in-file-process/fps_incoming_messages_table V3_FPS_MESSAGES_INCOMING
 
@@ -54,7 +54,7 @@ create /fps/outgoing/fps-in-file-process/fps_incoming_messages_table V3_FPS_MESS
 create /fps/outgoing/fps-in-file-process/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/outgoing/fps-in-file-process/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
 create /fps/outgoing/fps-in-file-process/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
-create /fps/outgoing/fps-in-file-process/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
+create /fps/outgoing/fps-in-file-process/bootstrap_servers hdf-group3-0.node.consul:6667,hdf-group3-1.node.consul:6667,hdf-group3-2.node.consul:6667
 
 ######################################################################################################################
 
@@ -64,21 +64,21 @@ create /fps/outgoing '-'
 create /fps/outgoing/fps-ack-file-generator '-'
 
 #### HDFS ####
-create /fps/outgoing/fps-ack-file-generator/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
-create /fps/outgoing/fps-ack-file-generator/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+create /fps/outgoing/fps-ack-file-generator/hdfs_name_node_1 http://ambari-master.node.consul:50070
+create /fps/outgoing/fps-ack-file-generator/hdfs_name_node_2 http://ambari-slave-0.node.consul:50070
 create /fps/outgoing/fps-ack-file-generator/hdfs_files_path_ack /lagertha/hermod/data/fps/ack
 create /fps/outgoing/fps-ack-file-generator/hdfs_files_path_nack /lagertha/hermod/data/fps/ack
 
 
 #### HBASE ####
-create /fps/outgoing/fps-ack-file-generator/phoenix_url sid-hdp-g1-0.node.sid.consul:2181:/hbase-secure
+create /fps/outgoing/fps-ack-file-generator/phoenix_url ambari-slave-0.node.consul:2181:/hbase-secure
 create /fps/outgoing/fps-ack-file-generator/fps_messages_table V3_FPS_MESSAGES_OUTGOING
 create /fps/outgoing/fps-ack-file-generator/fps_incoming_messages_table V3_FPS_MESSAGES_INCOMING
 #### KAFKA ####
 create /fps/outgoing/fps-ack-file-generator/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/outgoing/fps-ack-file-generator/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
 create /fps/outgoing/fps-ack-file-generator/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
-create /fps/outgoing/fps-ack-file-generator/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
+create /fps/outgoing/fps-ack-file-generator/bootstrap_servers hdf-group3-0.node.consul:6667,hdf-group3-1.node.consul:6667,hdf-group3-2.node.consul:6667
 
 ######################################################################################################################
 
@@ -88,13 +88,13 @@ create /fps/outgoing '-'
 create /fps/outgoing/fps-confirmation-file-generator '-'
 
 #### HDFS ####
-create /fps/outgoing/fps-confirmation-file-generator/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
-create /fps/outgoing/fps-confirmation-file-generator/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+create /fps/outgoing/fps-confirmation-file-generator/hdfs_name_node_1 http://ambari-master.node.consul:50070
+create /fps/outgoing/fps-confirmation-file-generator/hdfs_name_node_2 http://ambari-slave-0.node.consul:50070
 create /fps/outgoing/fps-confirmation-file-generator/hdfs_files_path_confirmation /lagertha/hermod/data/fps/confirmation
 create /fps/outgoing/fps-confirmation-file-generator/hdfs_files_ack_archive_path /lagertha/hermod/data/fps/ack-archive
 
 #### HBASE ####
-create /fps/outgoing/fps-confirmation-file-generator/phoenix_url sid-hdp-g1-0.node.sid.consul:2181:/hbase-secure
+create /fps/outgoing/fps-confirmation-file-generator/phoenix_url ambari-slave-0.node.consul:2181:/hbase-secure
 create /fps/outgoing/fps-confirmation-file-generator/fps_messages_table V3_FPS_MESSAGES_OUTGOING
 create /fps/outgoing/fps-confirmation-file-generator/fps_incoming_messages_table V3_FPS_MESSAGES_INCOMING
 create /fps/outgoing/fps-confirmation-file-generator/v3_fps_messages_outgoing_confirmed V3_FPS_MESSAGES_OUTGOING_CONFIRMED
@@ -102,7 +102,7 @@ create /fps/outgoing/fps-confirmation-file-generator/v3_fps_messages_outgoing_co
 create /fps/outgoing/fps-confirmation-file-generator/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/outgoing/fps-confirmation-file-generator/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
 create /fps/outgoing/fps-confirmation-file-generator/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
-create /fps/outgoing/fps-confirmation-file-generator/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
+create /fps/outgoing/fps-confirmation-file-generator/bootstrap_servers hdf-group3-0.node.consul:6667,hdf-group3-1.node.consul:6667,hdf-group3-2.node.consul:6667
 
 ######################################################################################################################
 
@@ -113,15 +113,17 @@ create /fps/outgoing '-'
 create /fps/outgoing/fps-in-file-upload '-'
 
 #### FTP ####
-create /fps/outgoing/fps-in-file-upload/ftp_username fps_site
-create /fps/outgoing/fps-in-file-upload/ftp_password fps
-create /fps/outgoing/fps-in-file-upload/ftp_private_key /home/svc_fps/.ssh/bacs_bl_uat
-create /fps/outgoing/fps-in-file-upload/ftp_host 54.38.137.247
+create /fps/outgoing/fps-in-file-upload/ftp_username v3fps_site
+create /fps/outgoing/fps-in-file-upload/ftp_password fp3qYTc@28
+create /fps/outgoing/fps-in-file-upload/ftp_private_key '-'
+create /fps/outgoing/fps-in-file-upload/ftp_host connector-sftp-0.node.consul
 create /fps/outgoing/fps-in-file-upload/ftp_port 22
 
 #### HDFS ####
-create /fps/outgoing/fps-in-file-upload/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
-create /fps/outgoing/fps-in-file-upload/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+create /fps/outgoing/fps-in-file-upload/hdfs_name_node_1 http://ambari-master.node.consul:50070
+create /fps/outgoing/fps-in-file-upload/hdfs_name_node_2 http://ambari-slave-0.node.consul:50070
+create /fps/outgoing/fps-in-file-upload/hdfs_files_path /lagertha/hermod/data/fps/outgoing
+
 
 ######################################################################################################################
 
@@ -132,14 +134,14 @@ create /fps/incoming/fps-incoming-file-generator '-'
 
 
 #### HDFS ####
-create /fps/incoming/fps-incoming-file-generator/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
-create /fps/incoming/fps-incoming-file-generator/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+create /fps/incoming/fps-incoming-file-generator/hdfs_name_node_1 http://ambari-master.node.consul:50070
+create /fps/incoming/fps-incoming-file-generator/hdfs_name_node_2 http://ambari-slave-0.node.consul:50070
 create /fps/incoming/fps-incoming-file-generator/hdfs_files_path_incoming /lagertha/hermod/data/fps/incoming
 create /fps/incoming/fps-incoming-file-generator/hdfs_files_path_incoming-archive /lagertha/hermod/data/fps/incoming-archive
 create /fps/incoming/fps-incoming-file-generator/hdfs_files_path_incoming-error /lagertha/hermod/data/fps/incoming-error
 
 #### HBASE ####
-create /fps/incoming/fps-incoming-file-generator/phoenix_url sid-hdp-g1-0.node.sid.consul:2181:/hbase-secure
+create /fps/incoming/fps-incoming-file-generator/phoenix_url ambari-slave-0.node.consul:2181:/hbase-secure
 create /fps/incoming/fps-incoming-file-generator/fps_incoming_messages_table V3_FPS_MESSAGES_INCOMING
 create /fps/incoming/fps-incoming-file-generator/fps_messages_table V3_FPS_MESSAGES_OUTGOING
 
@@ -147,7 +149,7 @@ create /fps/incoming/fps-incoming-file-generator/fps_messages_table V3_FPS_MESSA
 create /fps/incoming/fps-incoming-file-generator/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/incoming/fps-incoming-file-generator/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
 create /fps/incoming/fps-incoming-file-generator/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
-create /fps/incoming/fps-incoming-file-generator/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
+create /fps/incoming/fps-incoming-file-generator/bootstrap_servers hdf-group3-0.node.consul:6667,hdf-group3-1.node.consul:6667,hdf-group3-2.node.consul:6667
 
 ######################################################################################################################
 
@@ -159,8 +161,8 @@ create /fps/monitoring/fps-file-monitoring '-'
 
 
 #### HDFS ####
-create /fps/monitoring/fps-file-monitoring/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
-create /fps/monitoring/fps-file-monitoring/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+create /fps/monitoring/fps-file-monitoring/hdfs_name_node_1 http://ambari-master.node.consul:50070
+create /fps/monitoring/fps-file-monitoring/hdfs_name_node_2 http://ambari-slave-0.node.consul:50070
 create /fps/monitoring/fps-file-monitoring/hdfs_files_path_ack /lagertha/hermod/data/fps/ack
 create /fps/monitoring/fps-file-monitoring/hdfs_files_path_ack_archive /lagertha/hermod/data/fps/ack-archive
 create /fps/monitoring/fps-file-monitoring/hdfs_files_path_confirmation /lagertha/hermod/data/fps/confirmation
@@ -178,6 +180,6 @@ create /fps/monitoring/fps-file-monitoring/hdfs_files_path_outgoing_error /lager
 create /fps/monitoring/fps-file-monitoring/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/monitoring/fps-file-monitoring/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1
 create /fps/monitoring/fps-file-monitoring/schema /home/svc_v3fps/hermod-fps/jobs/modules/Event.avsc
-create /fps/monitoring/fps-file-monitoring/bootstrap_servers sid-hdf-g3-0.node.sid.consul:6667,sid-hdf-g3-1.node.sid.consul:6667,sid-hdf-g3-2.node.sid.consul:6667,sid-hdf-g3-3.node.sid.consul:6667,sid-hdf-g3-4.node.sid.consul:6667,sid-hdf-g3-5.node.sid.consul:6667
+create /fps/monitoring/fps-file-monitoring/bootstrap_servers hdf-group3-0.node.consul:6667,hdf-group3-1.node.consul:6667,hdf-group3-2.node.consul:6667
 
 ######################################################################################################################

@@ -1,0 +1,33 @@
+<workflow-app 
+    xmlns="uri:oozie:workflow:0.4" name="fps-in-file-process-${environmentName}">
+    <global>
+        <job-tracker>${jobTracker}</job-tracker>
+        <name-node>${nameNode}</name-node>
+        <configuration>
+            <property>
+                <name>mapred.job.queue.name</name>
+                <value>${queueName}</value>
+            </property>
+        </configuration>
+    </global>
+    <start to="fps-in-file-process"/>
+    <action name="fps-in-file-process">
+        <shell 
+            xmlns="uri:oozie:shell-action:0.3">
+            <exec>run-fps-in-file-process.sh</exec>
+            <argument>${zookeeperUrl}</argument> 
+            <file>/${rootPath}/modules</file>
+            <file>/${rootPath}/fps-in-file-process.py</file>
+            <file>/${rootPath}/fps-in-file-process</file>
+            <!-- <file>/${rootPath}/hermodbacs.keytab</file> -->
+            <file>/${rootPath}/run-fps-in-file-process.sh#run-fps-in-file-process.sh</file>
+            <capture-output/>
+        </shell>
+        <ok to="end"/>
+        <error to="kill"/>
+    </action>
+    <kill name="kill">
+        <message>${wf:errorMessage(wf:lastErrorNode())}</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
