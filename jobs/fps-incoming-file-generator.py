@@ -45,6 +45,7 @@ def main(args):
     for transaction in transactions:
         try:
             # 2. Convert to XML
+            kafka_logger.file_stats(transaction.row_key, "Incoming", 'INCOMING_NEW')
             incoming_file_content = convert_to_xml(transaction)
             print '[XML] Converted xml : {0}'.format(incoming_file_content)
             incoming_file_name = 'FPS_{0}.xml'.format(transaction.row_key)
@@ -75,20 +76,14 @@ def main(args):
 
 def check_active_name_node(config):
     active_name_node = config['hdfs_name_node_1']
-    file_service = hdfFileService.HdfsFileService(config, active_name_node)
-    try:
-        print('### Test active name node : ' + active_name_node)
-        file_service.get_files(config["hdfs_files_path"])
-    except Exception as exc:
-        print('### Name node : ' + active_name_node + ' is not active!')
-        active_name_node = config['hdfs_name_node_2']
 
     try:
         print('### Test active name node : ' + active_name_node)
-        file_service.get_files(config["hdfs_files_path"])
+        file_service = hdfFileService.HdfsFileService(config, active_name_node)
+        file_service.get_files(config["hdfs_files_path_incoming"])
     except Exception as exc:
         print('### Name node : ' + active_name_node + ' is not active!')
-        active_name_node = config['hdfs_name_node_1']
+        active_name_node = config['hdfs_name_node_2']
 
     file_service = hdfFileService.HdfsFileService(config, active_name_node)
     print('### Active name node : ' + active_name_node)

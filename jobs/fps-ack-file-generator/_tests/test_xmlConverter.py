@@ -33,6 +33,7 @@ def test_read_transcations(xml_converter, expected_xml, transaction_id, file_id,
     fps_file.transaction.transaction_id = transaction_id
     fps_file.transaction.amount = amount
     # act
-    xml = xml_converter.convert(fps_file, date, string_date)
+    xml = xml_converter.convert(fps_file, date, string_date, "complete")
+    print xml.lower()
     # assert
     assert expected_xml.strip().lower() == xml.strip().lower()

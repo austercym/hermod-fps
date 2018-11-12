@@ -10,6 +10,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'model
 import transaction
 import fpsFile
 import incomingTransaction
+import confirmedTransaction
 
 class HbaseService:
 
@@ -58,6 +59,48 @@ class HbaseService:
         df = rdd.toDF(["ROWKEY", "PAYMENT_ID", "STATUS"])
         df.write.format("org.apache.phoenix.spark").mode("overwrite").option(
             "table", '"' + self.fps_messages_table + '"').option("zkUrl", self.phoenix_url).save()
+
+    def get_confirmed(self, ids):
+        confirmed = []
+
+        sqlc = SQLContext(self.sc)
+        df = sqlc.read \
+            .format("org.apache.phoenix.spark") \
+            .option("table", '"' + self.config['v3_fps_messages_outgoing_confirmed'] + '"') \
+            .option("zkUrl", self.phoenix_url) \
+            .load()
+        df.registerTempTable("hbasetable")
+        query = 'SELECT ROWKEY, STATUS, REJECTION_REASON FROM hbasetable WHERE ROWKEY in ({0})'.format(
+            ids)
+        rowList = sqlc.sql(query).collect()
+        for row in rowList:
+            message = confirmedTransaction.ConfirmedTransaction()
+            message.row_key = row['ROWKEY']
+            message.status = row['STATUS']
+            message.rejection_reason = row['REJECTION_REASON']
+            confirmed.append(message)
+        return confirmed
+
+    def update_outgoing_ack(self, row_key, status, ack_file_name):
+        rdd = self.sc.parallelize(
+            [(row_key, ack_file_name, status)])
+        df = rdd.toDF(["ROWKEY", "ACK_FILE_NAME", "STATUS"])
+        df.write.format("org.apache.phoenix.spark").mode("overwrite").option(
+            "table", '"' + self.fps_messages_table + '"').option("zkUrl", self.phoenix_url).save()
+    
+    def update_outgoing_ack_file_name(self, row_key, ack_file_name):
+        rdd = self.sc.parallelize(
+            [(row_key, ack_file_name)])
+        df = rdd.toDF(["ROWKEY", "ACK_FILE_NAME"])
+        df.write.format("org.apache.phoenix.spark").mode("overwrite").option(
+            "table", '"' + self.fps_messages_table + '"').option("zkUrl", self.phoenix_url).save()
+    
+    def update_outgoing_confirmation(self, row_key, status, confirmation_file_name):
+        rdd = self.sc.parallelize(
+            [(row_key, confirmation_file_name, status)])
+        df = rdd.toDF(["ROWKEY", "CONFIRMATION_FILE_NAME", "STATUS"])
+        df.write.format("org.apache.phoenix.spark").mode("overwrite").option(
+            "table", '"' + self.fps_messages_table + '"').option("zkUrl", self.phoenix_url).save()
     
     def update_message_status(self, row_key, status):
         rdd = self.sc.parallelize([(row_key, status)])
@@ -75,7 +118,7 @@ class HbaseService:
             .option("zkUrl", self.phoenix_url) \
             .load()
         df.registerTempTable("hbasetable")
-        query = 'SELECT ROWKEY, NOSTRO_SORT_CODE, NOSTRO_ACCOUNT_NUMBER, AMOUNT, RECEIVER_SORT_CODE, RECEIVER_ACCOUNT_NUMBER, RECEIVER_NAME, REFERENCE, SENDER_NAME, STATUS, PAYMENT_ID, TRANSACTION_FILE_NAME, TRANSACTION_FILE_ID FROM hbasetable WHERE STATUS = \'{0}\' OR STATUS = \'{1}\''.format(
+        query = 'SELECT ROWKEY, NOSTRO_SORT_CODE, NOSTRO_ACCOUNT_NUMBER, AMOUNT, RECEIVER_SORT_CODE, RECEIVER_ACCOUNT_NUMBER, RECEIVER_NAME, REFERENCE, SENDER_NAME, STATUS, PAYMENT_ID, TRANSACTION_FILE_NAME, TRANSACTION_FILE_ID FROM hbasetable WHERE STATUS = \'{0}\' OR STATUS = \'{1}\' OR (STATUS = \'CONFIRMED\' AND ACK_FILE_NAME is null)'.format(
             'ACK', 'NACK')
         rowList = sqlc.sql(query).collect()
         for row in rowList:
@@ -143,8 +186,8 @@ class HbaseService:
             .option("zkUrl", self.phoenix_url) \
             .load()
         df.registerTempTable("hbasetable")
-        query = 'SELECT ROWKEY, NOSTRO_SORT_CODE, NOSTRO_ACCOUNT_NUMBER, AMOUNT, RECEIVER_SORT_CODE, RECEIVER_ACCOUNT_NUMBER, RECEIVER_NAME, REFERENCE, SENDER_NAME, STATUS, PAYMENT_ID, TRANSACTION_FILE_NAME, TRANSACTION_FILE_ID, REJECTION_REASON FROM hbasetable WHERE STATUS = \'{0}\' OR STATUS = \'{1}\''.format(
-            'CONFIRMED', 'CONFIRMED_REJECTION')
+        query = 'SELECT ROWKEY, NOSTRO_SORT_CODE, NOSTRO_ACCOUNT_NUMBER, AMOUNT, RECEIVER_SORT_CODE, RECEIVER_ACCOUNT_NUMBER, RECEIVER_NAME, REFERENCE, SENDER_NAME, STATUS, PAYMENT_ID, TRANSACTION_FILE_NAME, TRANSACTION_FILE_ID, REJECTION_REASON FROM hbasetable WHERE ACK_FILE_NAME is not null AND STATUS = \'{0}\''.format(
+            'ACK_UPLOADED')
         rowList = sqlc.sql(query).collect()
         for row in rowList:
             fps_file = fpsFile.FpsFile()

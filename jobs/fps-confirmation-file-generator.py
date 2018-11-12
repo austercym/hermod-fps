@@ -42,7 +42,30 @@ def main(args):
     kafka_logger = kafkaLogger.KafkaLogger(config)
     # 1. Get transaction from hbase
     fps_files = hbase_service.get_confirmation_messages()
+    ack_files = file_service.get_files(config["hdfs_files_ack_archive_path"])
+    fps_files_acknowledged = []
+    fps_files_confirmed = []
+    fps_files_ids = ""
+
     for fps_file in fps_files:
+        for ack_file in ack_files:
+            if fps_file.transaction.transaction_id in ack_file[0]:
+                fps_files_acknowledged.append(fps_file)
+                fps_files_ids = fps_files_ids+"'"+fps_file.transaction.transaction_id + "',"
+                break
+    confirmed_message = []
+    if(fps_files_ids):
+        confirmed_message = hbase_service.get_confirmed(fps_files_ids[:-1])
+    
+    for fps_file in fps_files_acknowledged:
+        for confirmed_file in confirmed_message:
+            if fps_file.transaction.transaction_id == confirmed_file.row_key:
+                fps_file.transaction.status = confirmed_file.status
+                fps_file.transaction.rejection_reason = confirmed_file.rejection_reason
+                fps_files_confirmed.append(fps_file)
+                break
+
+    for fps_file in fps_files_confirmed:
         try:
             # 2. Convert to XML
             kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_CONFIRMED')
@@ -59,34 +82,29 @@ def main(args):
             print '[HDFS upload file] Upload generated file to HDFS : {0}'.format(config["hdfs_files_path_confirmation"])
             file_service.upload_file(confirmation_zip_file_name, config["hdfs_files_path_confirmation"])
             print '[Hbase row_key ]  {0}'.format(fps_file.transaction.row_key)
-            hbase_service.update_message_status(fps_file.transaction.row_key, "CONFIRMED_UPLOADED")
+            hbase_service.update_outgoing_confirmation(fps_file.transaction.row_key, "CONFIRMED_UPLOADED", confirmation_zip_file_name)
             os.remove(confirmation_xml_file_name)
             os.remove(confirmation_zip_file_name)
             kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_CONFIRMED_UPLOADED')
         except Exception as exc:
-            print '### Error during creating ack file:', exc
+            print '### Error during creating confirmation file:', exc
             print repr(exc)
 
     print '### fps-confirmation-file-generator - finished'
 
 #region HDFS
 
+
 def check_active_name_node(config):
     active_name_node = config['hdfs_name_node_1']
-    file_service = hdfFileService.HdfsFileService(config, active_name_node)
-    try:
-        print('### Test active name node : ' + active_name_node)
-        file_service.get_files(config["hdfs_files_path"])
-    except Exception as exc:
-        print('### Name node : ' + active_name_node + ' is not active!')
-        active_name_node = config['hdfs_name_node_2']
 
     try:
         print('### Test active name node : ' + active_name_node)
-        file_service.get_files(config["hdfs_files_path"])
+        file_service = hdfFileService.HdfsFileService(config, active_name_node)
+        file_service.get_files(config["hdfs_files_path_confirmation"])
     except Exception as exc:
         print('### Name node : ' + active_name_node + ' is not active!')
-        active_name_node = config['hdfs_name_node_1']
+        active_name_node = config['hdfs_name_node_2']
 
     file_service = hdfFileService.HdfsFileService(config, active_name_node)
     print('### Active name node : ' + active_name_node)

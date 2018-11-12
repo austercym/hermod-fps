@@ -17,7 +17,7 @@ class JsonConverter:
         self.config = config
 
     def convert(self, transaction, message_id):
-        if(transaction.sender_name.strip().lower() == 'OWELL UNION PARTNE' or not transaction.sender_name.strip()):
+        if(transaction.sender_name.strip().lower() == 'OWELL UNION PARTNE'.strip().lower() or not transaction.sender_name.strip()):
             transaction.sender_name = 'ipagoo LLP'
         
         #TODO: what about the other fields? 

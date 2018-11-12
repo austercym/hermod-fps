@@ -84,7 +84,7 @@ class XMLConverter:
                      </Id>
                   </CdtrAcct>
                   <Prtry>
-                     <Tp>IPAGOO - GBP</Tp>
+                     <Tp>%(reference)s</Tp>
                      <Pty />
                   </Prtry>
                </RltdPties>
@@ -110,7 +110,7 @@ class XMLConverter:
         data = {'payment_id': transaction.row_key, 'date': date, 'nostro_sort_code': transaction.nostro_sort_code + '' + transaction.nostro_account_number, 
                 'amount': "%.2f" % transaction.amount, 'sender_name': transaction.sender_name, 'receiver_name': transaction.receiver_name,
                 'short_date': short_date, 'reference': transaction.reference, 'sender_account_number': transaction.sender_sort_code + '' + transaction.sender_account_number,
-                'receiver_account_number': transaction.nostro_sort_code + '' + transaction.receiver_account_number, 'reference': transaction.reference}
+                'receiver_account_number': transaction.receiver_sort_code + '' + transaction.receiver_account_number, 'reference': transaction.reference}
 
         #print xmlTemplate % data
 

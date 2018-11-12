@@ -3,7 +3,8 @@ create /fps '-'
 create /fps/outgoing '-'
 create /fps/outgoing/fps-in-file-download '-'
 
-#### FTP ####
+#### FTP ####create /fps/outgoing/fps-in-file-download/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
+create /fps/outgoing/fps-in-file-download/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
 create /fps/outgoing/fps-in-file-download/ftp_username fps_site
 create /fps/outgoing/fps-in-file-download/ftp_password fps
 create /fps/outgoing/fps-in-file-download/ftp_private_key /home/svc_fps/.ssh/bacs_bl_uat
@@ -14,8 +15,7 @@ create /fps/outgoing/fps-in-file-download/ftp_archive_dir /home/fps_site/fps/out
 create /fps/outgoing/fps-in-file-download/ftp_error_dir /home/fps_site/fps/outgoing-error
 
 #### HDFS ####
-create /fps/outgoing/fps-in-file-download/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
-create /fps/outgoing/fps-in-file-download/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
+
 create /fps/outgoing/fps-in-file-download/hdfs_files_path /lagertha/hermod/data/fps/outgoing
 create /fps/outgoing/fps-in-file-download/hdfs_archive_folder /lagertha/hermod/data/fps/outgoing-archive
 create /fps/outgoing/fps-in-file-download/hdfs_error_folder /lagertha/hermod/data/fps/outgoing-error
@@ -91,12 +91,13 @@ create /fps/outgoing/fps-confirmation-file-generator '-'
 create /fps/outgoing/fps-confirmation-file-generator/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
 create /fps/outgoing/fps-confirmation-file-generator/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
 create /fps/outgoing/fps-confirmation-file-generator/hdfs_files_path_confirmation /lagertha/hermod/data/fps/confirmation
-
+create /fps/outgoing/fps-confirmation-file-generator/hdfs_files_ack_archive_path /lagertha/hermod/data/fps/ack-archive
 
 #### HBASE ####
 create /fps/outgoing/fps-confirmation-file-generator/phoenix_url sid-hdp-g1-0.node.sid.consul:2181:/hbase-secure
 create /fps/outgoing/fps-confirmation-file-generator/fps_messages_table V3_FPS_MESSAGES_OUTGOING
 create /fps/outgoing/fps-confirmation-file-generator/fps_incoming_messages_table V3_FPS_MESSAGES_INCOMING
+create /fps/outgoing/fps-confirmation-file-generator/v3_fps_messages_outgoing_confirmed V3_FPS_MESSAGES_OUTGOING_CONFIRMED
 #### KAFKA ####
 create /fps/outgoing/fps-confirmation-file-generator/topic_fps_file_summary com.orwellg.fps.file.summary.1
 create /fps/outgoing/fps-confirmation-file-generator/topic_fps_hdfs_files_summary com.orwellg.fps.hdfs.files.summary.1

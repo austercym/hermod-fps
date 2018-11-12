@@ -100,9 +100,10 @@ def main(args):
 
 def check_active_name_node(config):
     active_name_node = config['hdfs_name_node_1']
-    file_service = hdfFileService.HdfsFileService(config, active_name_node)
+    
     try:
         print('### Test active name node : ' + active_name_node)
+        file_service = hdfFileService.HdfsFileService(config, active_name_node)
         file_service.get_files(config["hdfs_files_path"])
     except Exception as exc:
         print('### Name node : ' + active_name_node + ' is not active!')
@@ -179,6 +180,8 @@ def send_payment(config, transaction, token, message_id):
         print '[API Send Payment] response {0}'.format(response.json())
         
     raise Exception('API Get Token response code {0}'.format(response.status_code))
+
+    return transaction
 
 #endregion
 
