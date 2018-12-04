@@ -1,0 +1,10 @@
+[
+    [
+        "expected_xml"
+    ],
+    [
+        [
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.054.001.01\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"><BkToCstmrDbtCdtNtfctnV01><GrpHdr><MsgId>434414559091901101</MsgId><CreDtTm>2018-11-09 19:14:38</CreDtTm></GrpHdr><Ntfctn><Id>434414559091901101</Id><CreDtTm>2018-11-09 19:14:38</CreDtTm><Acct><Id><PrtryAcct><Id>200023622398</Id></PrtryAcct></Id><Ccy>GBP</Ccy></Acct><TxsSummry><TtlNtries><NbOfNtries>1</NbOfNtries><Sum>0.26</Sum></TtlNtries><TtlCdtNtries><NbOfNtries>1</NbOfNtries><Sum>0.26</Sum></TtlCdtNtries><TtlDbtNtries><NbOfNtries>0</NbOfNtries><Sum>0.00</Sum></TtlDbtNtries></TxsSummry><Ntry><Amt Ccy=\"GBP\">0.26</Amt><CdtDbtInd>CRDT</CdtDbtInd><Sts>BOOK</Sts><BookgDt><Dt>2018-11-09</Dt></BookgDt><BkTxCd><Prtry><Cd>SIP UKBA CR 40269</Cd></Prtry></BkTxCd><TxDtls><Refs><EndToEndId>434414559091901101</EndToEndId><TxId>434414559091901101</TxId></Refs><RltdPties><Dbtr><Nm>COOMBS&amp;PERAL</Nm></Dbtr><DbtrAcct><Id><PrtryAcct><Id>40062172550156</Id></PrtryAcct></Id></DbtrAcct><Cdtr><Nm>CMCoombs Ipagoo</Nm></Cdtr><CdtrAcct><Id><PrtryAcct><Id>23345600015051</Id></PrtryAcct></Id></CdtrAcct><Prtry><Tp>Cmcoombs hsbc</Tp><Pty /></Prtry></RltdPties><RmtInf><Strd><AddtlRmtInf>NO REF</AddtlRmtInf></Strd><Strd><AddtlRmtInf>Cmcoombs hsbc</AddtlRmtInf></Strd></RmtInf><RltdDts><TxDtTm>2018-11-09 19:14:38</TxDtTm></RltdDts><AddtlTxInf>RP46799630545165001020181004826200026</AddtlTxInf></TxDtls><AddtlNtryInf>COMPLETE//0000//001//CREDIT</AddtlNtryInf></Ntry></Ntfctn></BkToCstmrDbtCdtNtfctnV01></Document>"
+        ]
+    ]
+]

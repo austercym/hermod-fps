@@ -9,9 +9,9 @@ create /fps/outgoing/fps-in-file-download/ftp_username v3fpsprd
 
 create /fps/outgoing/fps-in-file-download/ftp_host connector-sftp-0.node.consul
 create /fps/outgoing/fps-in-file-download/ftp_port 22
-create /fps/outgoing/fps-in-file-download/ftp_dir /fps/outgoing
-create /fps/outgoing/fps-in-file-download/ftp_archive_dir /fps/outgoing-archive
-create /fps/outgoing/fps-in-file-download/ftp_error_dir /fps/outgoing-error
+create /fps/outgoing/fps-in-file-download/ftp_dir /v3/fps/outgoing
+create /fps/outgoing/fps-in-file-download/ftp_archive_dir /v3/fps/outgoing-archive
+create /fps/outgoing/fps-in-file-download/ftp_error_dir /v3/fps/outgoing-error
 
 #### HDFS ####
 create /fps/outgoing/fps-in-file-download/hdfs_name_node_1 http://hdp-g1-1.node.consul:50070
@@ -27,12 +27,12 @@ create /fps '-'
 create /fps/outgoing '-'
 create /fps/outgoing/fps-in-file-process '-'
 
-create /fps/outgoing/fps-in-file-process/sender_sort_code 040082
-create /fps/outgoing/fps-in-file-process/sender_account_number 80956892
+get /fps/outgoing/fps-in-file-process/sender_sort_code 040082
+get /fps/outgoing/fps-in-file-process/sender_account_number 80956892
 
 #### API ####
-create /fps/outgoing/fps-in-file-process/api_login_url https://api-0.node.consul:8285/bifrost
-create /fps/outgoing/fps-in-file-process/api_url https://api-0.node.consul:8080/bifrost
+get /fps/outgoing/fps-in-file-process/api_login_url https://api-0.node.consul:8285/bifrost
+get /fps/outgoing/fps-in-file-process/api_url https://api-0.node.consul:8080/bifrost
 create /fps/outgoing/fps-in-file-process/api_user v3fps
 
 #### HDFS ####
@@ -118,7 +118,7 @@ create /fps/outgoing/fps-in-file-upload/ftp_port 22
 #### HDFS ####
 create /fps/outgoing/fps-in-file-upload/hdfs_name_node_1 http://hdp-g1-1.node.consul:50070
 create /fps/outgoing/fps-in-file-upload/hdfs_name_node_2 http://hdp-g1-0.node.consul:50070
-
+create /fps/outgoing/fps-in-file-upload/hdfs_files_path /lagertha/hermod/data/fps/outgoing
 ######################################################################################################################
 
 ######## SID fps-incoming-file-generator ####################################################################################

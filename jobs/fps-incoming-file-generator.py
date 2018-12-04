@@ -9,7 +9,7 @@ sys.path.append(os.path.join(os.path.dirname(
 import zooconfig
 import hdfFileService
 import hbaseService
-import xmlConverter
+import incomingXmlConverter
 import arrow
 import kafkaLogger
 
@@ -99,7 +99,7 @@ def convert_to_xml(transaction):
     date = arrow.utcnow()
     date_long = date.format('YYYY-MM-DD HH:mm:ss')
     short_date = date.format('YYYY-MM-DD')
-    xml_converter = xmlConverter.XMLConverter()
+    xml_converter = incomingXmlConverter.XMLConverter()
     return xml_converter.convert(transaction, date_long, short_date)
 
 #endregion
