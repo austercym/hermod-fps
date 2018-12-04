@@ -20,5 +20,5 @@ class XMLConverter:
                 'date': date, 'string_date': string_date, 'amount': "%.0f" % amount, 'status': status}
 
         #print xmlTemplate % data
-
-        return xmlTemplate % data
+        xml = xmlTemplate % data
+        return xml.replace("&", "&amp;").replace("'", "&apos;")
