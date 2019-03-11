@@ -4,14 +4,14 @@ create /fps/outgoing '-'
 create /fps/outgoing/fps-in-file-download '-'
 
 #### FTP ####
-create /fps/outgoing/fps-in-file-download/ftp_username v3fps_site
-create /fps/outgoing/fps-in-file-download/ftp_password fp3qYTc@28
+create /fps/outgoing/fps-in-file-download/ftp_username v3bacs_site
+create /fps/outgoing/fps-in-file-download/ftp_password sv3bacsU@T19
 create /fps/outgoing/fps-in-file-download/ftp_private_key '-'
 create /fps/outgoing/fps-in-file-download/ftp_host connector-sftp-0.node.consul
 create /fps/outgoing/fps-in-file-download/ftp_port 22
-create /fps/outgoing/fps-in-file-download/ftp_dir /fps/outgoing
-create /fps/outgoing/fps-in-file-download/ftp_archive_dir /fps/outgoing-archive
-create /fps/outgoing/fps-in-file-download/ftp_error_dir /fps/outgoing-error
+create /fps/outgoing/fps-in-file-download/ftp_dir /v3/fps/outgoing
+create /fps/outgoing/fps-in-file-download/ftp_archive_dir /v3/fps/outgoing-archive
+create /fps/outgoing/fps-in-file-download/ftp_error_dir /v3/fps/outgoing-error
 
 #### HDFS ####
 create /fps/outgoing/fps-in-file-download/hdfs_name_node_1 http://ambari-master.node.consul:50070
@@ -113,8 +113,8 @@ create /fps/outgoing '-'
 create /fps/outgoing/fps-in-file-upload '-'
 
 #### FTP ####
-create /fps/outgoing/fps-in-file-upload/ftp_username v3fps_site
-create /fps/outgoing/fps-in-file-upload/ftp_password fp3qYTc@28
+create /fps/outgoing/fps-in-file-upload/ftp_username v3bacs_site
+create /fps/outgoing/fps-in-file-upload/ftp_password sv3bacsU@T19
 create /fps/outgoing/fps-in-file-upload/ftp_private_key '-'
 create /fps/outgoing/fps-in-file-upload/ftp_host connector-sftp-0.node.consul
 create /fps/outgoing/fps-in-file-upload/ftp_port 22

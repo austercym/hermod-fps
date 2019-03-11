@@ -17,15 +17,15 @@ class JsonConverter:
         self.config = config
 
     def convert(self, transaction, message_id):
-        if(transaction.sender_name.strip().lower() == 'OWELL UNION PARTNE'.strip().lower() or not transaction.sender_name.strip()):
-            transaction.sender_name = 'ipagoo LLP'
+        # if(transaction.sender_name.strip().lower() == 'OWELL UNION PARTNE'.strip().lower() or not transaction.sender_name.strip()):
+        #     transaction.sender_name = 'ipagoo LLP'
         
         #TODO: what about the other fields? 
         data = {"paymentType": "SIP",
                 "intrBkSttlmAmtCcy": "GBP",
                 "intrBkSttlmAmt": transaction.amount,
-                "dbtrAgt": self.config['sender_sort_code'],
-                "dbtrAcct": self.config['sender_account_number'],
+                "dbtrAgt": transaction.nostro_sort_code,
+                "dbtrAcct": transaction.nostro_account_number,
                 "dbtrAcctId": "",
                 "dbtrNm": transaction.sender_name,
                 "endToEndId": message_id,

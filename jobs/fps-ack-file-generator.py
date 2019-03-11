@@ -12,9 +12,10 @@ import hbaseService
 import xmlConverter
 import arrow
 import kafkaLogger
+from datetime import datetime, timedelta, time
 
 def main(args):
-    print '### fps-ack-file-generator - started'
+    log_to_console('fps-ack-file-generator - started')
     zookeeper_url = ''
     try:
         opts, args = getopt.getopt(
@@ -29,9 +30,6 @@ def main(args):
         sys.exit(2)
 
     zookeeper_config = '/fps/outgoing/fps-ack-file-generator/'
-
-    print '### Fetching configuration from zookeeper url: ', zookeeper_url
-    print '### Fetching configuration from zookeeper node: ', zookeeper_config
 
     # 0. Init
     config = zooconfig.get_config(zookeeper_url, zookeeper_config)
@@ -53,36 +51,35 @@ def main(args):
             
             # 4. Upload file to HDFS
             if(fps_file.transaction.status == 'ACK'):
-                print '[HDFS upload file] Upload generated file to HDFS : {0}'.format(config["hdfs_files_path_ack"])
+                log_to_console('[HDFS upload file] Upload generated file to HDFS : {0}'.format(config["hdfs_files_path_ack"]))
                 file_service.upload_file(ack_file_name, config["hdfs_files_path_ack"])
                 # 5. Update status in Hbase
-                print '[Hbase row_key ]  {0}'.format(fps_file.transaction.row_key)
+                log_to_console('[Hbase row_key ]  {0}'.format(fps_file.transaction.row_key))
                 hbase_service.update_outgoing_ack(fps_file.transaction.row_key, "ACK_UPLOADED", ack_file_name)
                 # 7. Log to kafka
                 kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_ACK_UPLOADED')
             elif(fps_file.transaction.status == 'NACK'):
 
-                print '[HDFS upload file] Upload generated file to HDFS : {0}'.format(config["hdfs_files_path_nack"])
-                print '[Hbase row_key ]  {0}'.format(fps_file.transaction.row_key)
+                log_to_console('[HDFS upload file] Upload generated file to HDFS : {0}'.format(config["hdfs_files_path_nack"]))
+                log_to_console('[Hbase row_key ]  {0}'.format(fps_file.transaction.row_key))
                 file_service.upload_file(ack_file_name, config["hdfs_files_path_nack"])
                 # 5. Update status in Hbase
                 hbase_service.update_outgoing_ack(fps_file.transaction.row_key, "NACK_UPLOADED", ack_file_name)
                 # 7. Log to kafka
                 kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_NACK_UPLOADED')
             elif(fps_file.transaction.status == 'CONFIRMED'):
-                print '[HDFS upload file] Upload generated file to HDFS : {0}'.format(config["hdfs_files_path_ack"])
+                log_to_console('[HDFS upload file] Upload generated file to HDFS : {0}'.format(config["hdfs_files_path_ack"]))
                 file_service.upload_file(ack_file_name, config["hdfs_files_path_ack"])
                 # 5. Update status in Hbase
-                print '[Hbase row_key ]  {0}'.format(fps_file.transaction.row_key)
+                log_to_console('[Hbase row_key ]  {0}'.format(fps_file.transaction.row_key))
                 hbase_service.update_outgoing_ack_file_name(fps_file.transaction.row_key, ack_file_name)
                 # 7. Log to kafka
                 kafka_logger.file_stats(fps_file.transaction.transaction_id, "Outgoing", 'OUTGOING_ACK_UPLOADED')
             os.remove(ack_file_name)
         except Exception as exc:
-            print '### Error during creating ack file:', exc
-            print repr(exc)
+            log_to_console('Error during creating ack file: {0}'.format(str(exc)))
 
-    print '### fps-ack-file-generator - finished'
+    log_to_console('fps-ack-file-generator - finished')
 
 #region HDFS
 
@@ -91,15 +88,15 @@ def check_active_name_node(config):
     active_name_node = config['hdfs_name_node_1']
 
     try:
-        print('### Test active name node : ' + active_name_node)
+        log_to_console('Test active name node : {0}'.format(active_name_node))
         file_service = hdfFileService.HdfsFileService(config, active_name_node)
         file_service.get_files(config["hdfs_files_path_ack"])
     except Exception as exc:
-        print('### Name node : ' + active_name_node + ' is not active!')
+        log_to_console('Name node : {0} is not active!'.format(active_name_node))
         active_name_node = config['hdfs_name_node_2']
 
     file_service = hdfFileService.HdfsFileService(config, active_name_node)
-    print('### Active name node : ' + active_name_node)
+    log_to_console('Active name node : {0}'.format(active_name_node))
     return file_service
 
 #endregion
@@ -107,7 +104,7 @@ def check_active_name_node(config):
 #region convert to xml
 
 def convert_to_xml(fps_file):
-    print '[XML] Convert model to XML'
+    log_to_console('[XML] Convert model to XML')
     date = arrow.utcnow()
     processing_date_bst = date.format('ddd MMM DD HH:mm:ss') + ' BST ' + date.format('YYYY')
     processing_date_short = date.format('YYYY-MM-DD')
@@ -121,4 +118,12 @@ def convert_to_xml(fps_file):
 
 #endregion
 
+#region logging
+
+def log_to_console(message):
+    processing_date = datetime.utcnow()
+    processing_date_string = str(processing_date)
+    print '{0} - {1}'.format(processing_date_string, message)
+
+#endregion
 main(sys.argv[1:])

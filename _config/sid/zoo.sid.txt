@@ -5,16 +5,17 @@ create /fps/outgoing/fps-in-file-download '-'
 
 #### FTP ####create /fps/outgoing/fps-in-file-download/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
 create /fps/outgoing/fps-in-file-download/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
-create /fps/outgoing/fps-in-file-download/ftp_username fps_site
-create /fps/outgoing/fps-in-file-download/ftp_password fps
-create /fps/outgoing/fps-in-file-download/ftp_private_key /home/svc_fps/.ssh/bacs_bl_uat
+create /fps/outgoing/fps-in-file-download/ftp_username v3bacs_site
+create /fps/outgoing/fps-in-file-download/ftp_password v3bacs
 create /fps/outgoing/fps-in-file-download/ftp_host 54.38.137.247
 create /fps/outgoing/fps-in-file-download/ftp_port 22
-create /fps/outgoing/fps-in-file-download/ftp_dir /home/fps_site/fps/outgoing
-create /fps/outgoing/fps-in-file-download/ftp_archive_dir /home/fps_site/fps/outgoing-archive
-create /fps/outgoing/fps-in-file-download/ftp_error_dir /home/fps_site/fps/outgoing-error
+create /fps/outgoing/fps-in-file-download/ftp_dir /v3/fps/outgoing
+create /fps/outgoing/fps-in-file-download/ftp_archive_dir /v3/fps/outgoing-archive
+create /fps/outgoing/fps-in-file-download/ftp_error_dir /v3/fps/outgoing-error
 
 #### HDFS ####
+create /fps/outgoing/fps-in-file-download/hdfs_name_node_1 http://sid-hdp-g1-0.node.sid.consul:50070
+create /fps/outgoing/fps-in-file-download/hdfs_name_node_2 http://sid-hdp-g1-1.node.sid.consul:50070
 
 create /fps/outgoing/fps-in-file-download/hdfs_files_path /lagertha/hermod/data/fps/outgoing
 create /fps/outgoing/fps-in-file-download/hdfs_archive_folder /lagertha/hermod/data/fps/outgoing-archive
@@ -113,9 +114,13 @@ create /fps/outgoing '-'
 create /fps/outgoing/fps-in-file-upload '-'
 
 #### FTP ####
-create /fps/outgoing/fps-in-file-upload/ftp_username fps_site
-create /fps/outgoing/fps-in-file-upload/ftp_password fps
-create /fps/outgoing/fps-in-file-upload/ftp_private_key /home/svc_fps/.ssh/bacs_bl_uat
+get /fps/outgoing/fps-in-file-upload/ftp_username 
+get /fps/outgoing/fps-in-file-upload/ftp_password 
+get /fps/outgoing/fps-in-file-upload/ftp_host
+get /fps/outgoing/fps-in-file-upload/ftp_port
+
+create /fps/outgoing/fps-in-file-upload/ftp_username v3bacs_site
+create /fps/outgoing/fps-in-file-upload/ftp_password v3bacs
 create /fps/outgoing/fps-in-file-upload/ftp_host 54.38.137.247
 create /fps/outgoing/fps-in-file-upload/ftp_port 22
 
